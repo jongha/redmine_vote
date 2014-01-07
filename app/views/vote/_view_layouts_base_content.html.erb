@@ -1,0 +1,11 @@
+<%
+unless User.current.login == ''
+%>
+
+<div id="vote">
+    <a class="vote-point" id="vote-point1" href="#" data-point="1">▲</a>
+    <a class="vote-point" id="vote-point-1" href="#" data-point="-1">▼</a>
+    <span>Vote</span>
+</div>
+
+<% end %>
