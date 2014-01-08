@@ -2,7 +2,7 @@ $(document).ready(function() {
     if($(".controller-messages").length && $("#vote").length) {
         var clr = $("<div></div>").css({ clear: "both" });
         var queue = [];
-        $(".message").each(
+        $(".message div.wiki").each(
             function() {
                 queue.push($(this));
             }
