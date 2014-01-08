@@ -1,5 +1,11 @@
-#vote {
+.vote-area {
     display:none;
-    margin: 20px auto;
+    padding: 5px 17px;
+    margin: 10px 10px 30px 10px;
+    border: 1px solid #CCCCCC;
     text-align:center;
+    font-size: 14px;
+    font-weight: bold;
+    background-color: #EEEEEE;
+    float: left;
 }

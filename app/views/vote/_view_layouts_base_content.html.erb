@@ -1,11 +1,9 @@
 <%
 unless User.current.login == ''
 %>
-
-<div id="vote">
-    <a class="vote-point" id="vote-point1" href="#" data-point="1">▲</a>
-    <a class="vote-point" id="vote-point-1" href="#" data-point="-1">▼</a>
-    <span>Vote</span>
+<div id="vote" class="vote-area" data-board="<%=@board.id%>" data-topic="<%=@topic.id%>">
+    <div><a class="vote-button" href="#" data-point="1">▲</a></div>
+    <div class="vote-point">-</div>
+    <div><a class="vote-button" href="#" data-point="-1">▼</a></div>
 </div>
-
 <% end %>

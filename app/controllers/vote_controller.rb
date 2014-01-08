@@ -3,18 +3,21 @@ class VoteController < ApplicationController
 
   before_filter :require_login
   before_filter :find_user, :find_board_and_topic#, :authorize
-
-  def submit
-    votes = Votes.new()
-    votes.submit(@message.id, @user.id, params[:point])
+  before_filter :init_votes
+  
+  def add
+    @point = @votes.add_vote(@message.id, @user.id, params[:point])
   end
 
-  def point
-    votes = Votes.new()
-    @point = votes.point(@message.id)
+  def get
+    @point = @votes.get_point(@message.id)
   end
 
 private
+  def init_votes
+    @votes = Votes.new
+  end
+  
   def find_user
     @user = User.current
   end
@@ -22,7 +25,7 @@ private
   def find_board_and_topic
     begin
       @board = Board.find(params[:board_id])
-      @message = @board.topics.find(params[:message_id])
+      @message = @board.messages.find(params[:message_id])
 
     rescue ActiveRecord::RecordNotFound
       render_404
