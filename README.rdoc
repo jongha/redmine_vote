@@ -1,7 +1,7 @@
 = Redmine Vote
 {<img src="https://gemnasium.com/jongha/redmine_vote.png" alt="Dependency Status" />}[https://gemnasium.com/jongha/redmine_vote]
 
-This is redmine vote plugin.
+This is redmine vote plugin. Its style is similar to stackoverflow. You can vote for each message with a positive or negative point. When you install this plugin votes table is created internally. This plugin shows the sum of points the message using internal table. If you want to know the reaction of message in Redmine forum, this plugin helps you. And also if you want more functions of the plugin, you can add the issue on github freely. Thanks.
 
 == Installing a plugin
 
