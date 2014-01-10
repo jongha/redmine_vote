@@ -6,7 +6,11 @@ class VoteController < ApplicationController
   before_filter :init_votes
   
   def add
-    @point = @votes.add_vote(@message.id, @user.id, params[:point])
+    if ['-1', '1'].include? params[:point] then
+      @point = @votes.add_vote(@message.id, @user.id, params[:point])
+    else
+      @point = @votes.get_point(@message.id)
+    end
   end
 
   def get

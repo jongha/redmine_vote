@@ -1,8 +1,8 @@
 $(document).ready(function() {
     if($(".controller-messages").length && $("#vote").length) {
-        var clr = $("<div></div>").css({ clear: "both" });
+        var clr = $("<div></div>").css({ clear: "right" });
         var queue = [];
-        $(".message div.wiki").each(
+        $(".message").each(
             function() {
                 queue.push($(this));
             }
@@ -21,7 +21,7 @@ $(document).ready(function() {
             if(messageId) {
                 vote.data({ topic: parseInt(String(messageId).replace(/message-/gi, "")) });
             }
-            that.prepend(vote).append(clr.clone());
+            that.css({ "clear": "both" }).prepend(vote);
 
             var board = vote.data("board");
             var topic = vote.data("topic");
