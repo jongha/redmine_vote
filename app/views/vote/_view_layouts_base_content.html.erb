@@ -1,9 +1,8 @@
-<%
-unless User.current.login == ''
-%>
-<div id="vote" class="vote-area" data-board="<%=@board.id%>" data-topic="<%=@topic.id%>">
-    <div><a class="vote-button" href="#" data-point="1">▲</a></div>
-    <div class="vote-point">-</div>
-    <div><a class="vote-button" href="#" data-point="-1">▼</a></div>
-</div>
+<% unless User.current.login == '' %>
+  <div id="vote" class="vote-area" data-board="<%=@board.id%>" data-topic="<%=@topic.id%>">
+      <div><a class="vote-button" href="#" data-point="1">▲</a></div>
+      <div class="vote-point">-</div>
+      <div><a class="vote-button" href="#" data-point="-1">▼</a></div>
+  </div>
+  <label id="label_vote_count" style="display:none"><%=l(:label_vote_count)%></label>
 <% end %>

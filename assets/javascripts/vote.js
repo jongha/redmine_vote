@@ -9,11 +9,11 @@ $(document).ready(function() {
         );
 
         var execQueue = function() {
-            if(queue.length) { 
+            if(queue.length) {
                 queueStep(queue.shift());
             }
         };
-        
+
         var queueStep = function(that) {
             var deferred = $.Deferred();
             var messageId = that.attr("id");
@@ -26,21 +26,21 @@ $(document).ready(function() {
             var board = vote.data("board");
             var topic = vote.data("topic");
             var votePoint = vote.find(".vote-point:first");
-            
+
             $.ajax({
-                type: "GET",
-                url: "/boards/" + board + "/topics/" + topic + "/vote",
-                cache: false,
-                error: function(jqXHR, textStatus, errorThrown) {
-                    votePoint.html("-");
-                },
-                success: function(data, textStatus, jqXHR) {
-                    votePoint.html($(data).find("#vote-point").html());
-                }
-                
+              type: "GET",
+              url: "/boards/" + board + "/topics/" + topic + "/vote",
+              cache: false,
+              error: function(jqXHR, textStatus, errorThrown) {
+                  votePoint.html("-");
+              },
+              success: function(data, textStatus, jqXHR) {
+                  votePoint.html($(data).find("#vote-point").html());
+              }
+
             }).always(function() {
                 deferred.always();
-                
+
                 vote.find(".vote-button").bind("click", function(event) {
                     event.preventDefault();
                     var point = $(this).data("point");
@@ -54,11 +54,67 @@ $(document).ready(function() {
                         }
                     });
                 });
-        
+
                 execQueue();
             });
             return deferred.promise();
         };
         execQueue();
+    };
+
+    var re = /https?:\/\/.*\/projects\/.*\/boards\/([0-9]*)/;
+    var url = document.URL;
+    var match = url.match(re);
+    var result = "#vote-result";
+
+    if(match) {
+      $("<div></div>")
+        .attr("id", "vote-result-box")
+        .insertAfter($("#content").find("p.breadcrumb"));
+
+      $.ajax({
+          type: "GET",
+          url: "/boards/" + match[1] + "/vote/result",
+          cache: false,
+          success: function(data, textStatus, jqXHR) {
+            if($(result).length === 0) {
+              var html = $(data).find(result).html();
+              if(html) {
+                $("#vote-result-box").addClass("vote-result").html(html);
+              }else {
+                $("#vote-result-box").remove();
+              }
+            }
+          }
+      });
+
+      var table = $("table.list.messages");
+
+      $("<th></th>")
+        .html($("#label_vote_count").text())
+        .insertAfter(table.find("thead > tr > th:nth-child(3)"));
+
+      $("<td></td>")
+        .addClass("vote-td-trigger")
+        .insertAfter(table.find("tbody > tr > td:nth-child(3)"));
+
+      $("td.vote-td-trigger").each(function() {
+        var _re = /\/boards\/([0-9]*)\/topics\/([0-9]*)/;
+        var _href = $(this).parent().find("td.subject > a").attr("href");
+        var _match = _href.match(_re);
+        if(_match) {
+          var _board = _match[1];
+          var _topic = _match[2];
+          var _this = $(this);
+          $.ajax({
+            type: "GET",
+            url: "/boards/" + _board + "/topics/" + _topic + "/vote",
+            cache: false,
+            success: function(data, textStatus, jqXHR) {
+              _this.html($(data).find("#vote-point").html());
+            }
+          });
+        }
+      });
     }
 });

@@ -1,0 +1,32 @@
+<% if @message.length > 0 %>
+<div id="vote-result">
+  <h2><%= l(:label_vote_result) %></h2>
+  <table class="list messages">
+    <thead><tr>
+      <th><%= l(:field_subject) %></th>
+      <th><%= l(:field_author) %></th>
+      <th><%= l(:field_created_on) %></th>
+      <th><%= l(:label_vote_count) %></th>
+      <th><%= l(:label_reply_plural) %></th>
+      <th><%= l(:label_message_last) %></th>
+    </tr></thead>
+    <tbody>
+    <% @message.each do |topic| %>
+      <tr class="message <%= cycle 'odd', 'even' %> <%= topic.sticky? ? 'sticky' : '' %> <%= topic.locked? ? 'locked' : '' %>">
+        <td class="subject"><%= link_to h(topic.subject), board_message_path(@board, topic) %></td>
+        <td class="author"><%= link_to_user(topic.author) %></td>
+        <td class="created_on"><%= format_time(topic.created_on) %></td>
+        <td class="vote-count"><%= @votes_message[topic.id] %></td>
+        <td class="reply-count"><%= topic.replies_count %></td>
+        <td class="last_message">
+          <% if topic.last_reply %>
+          <%= authoring topic.last_reply.created_on, topic.last_reply.author %><br />
+          <%= link_to_message topic.last_reply %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<% end %>
