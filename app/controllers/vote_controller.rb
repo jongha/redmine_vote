@@ -6,10 +6,10 @@ class VoteController < ApplicationController
   before_filter :init_votes
 
   MAX_VOTELIST = 5
-  
+
   def add
     find_board_and_topic
-    
+
     if ['-1', '1'].include? params[:point] then
       @point = @votes.add_vote(@message.id, @user.id, params[:point])
     else
@@ -19,18 +19,18 @@ class VoteController < ApplicationController
 
   def get
     find_board_and_topic
-    
+
     @point = @votes.get_point(@message.id)
   end
-  
+
   def result
     @board = Board.find(params[:board_id])
     @votes = Votes\
       .select('message_id, sum(point) as sump')\
-      .joins('right join messages on votes.message_id = messages.id and messages.parent_id is null')\
+      .joins('right join messages on messages.board_id = %s and votes.message_id = messages.id and messages.parent_id is null' % @board.id)\
       .group('message_id')\
-      .order('sum(point) desc, messages.id desc')\
-      .limit(MAX_VOTELIST + 1)
+      .order('sum(point) desc, messages.replies_count desc, messages.id desc')\
+      .limit(MAX_VOTELIST)
 
     messages = Array.new
     @votes_message = {}
@@ -38,18 +38,18 @@ class VoteController < ApplicationController
       messages.push(v.message_id)
       @votes_message[v.message_id] = v.sump
     end
-    
+
     @message = @board.messages\
       .joins('inner join (select message_id, sum(point) as sump from votes group by message_id) as votes on messages.id = votes.message_id')\
       .where('messages.id' => messages)\
-      .reorder('votes.sump desc, messages.id desc')
+      .reorder('votes.sump desc, messages.replies_count desc, messages.id desc')
   end
-  
+
 private
   def init_votes
     @votes = Votes.new
   end
-  
+
   def find_user
     @user = User.current
   end
