@@ -3,6 +3,10 @@
 
 This is redmine vote plugin. Its style is similar to stackoverflow. You can vote for each message with a positive or negative point. When you install this plugin votes table is created internally. This plugin shows the sum of points the message using internal table. If you want to know the reaction of message in Redmine forum, this plugin helps you. And also if you want more functions of the plugin, you can add the issue on github freely. Thanks.
 
+== Screenshot
+
+![Screenshot](https://raw.github.com/jongha/redmine_vote/master/screenshot/screenshot.png)
+
 == Installing a plugin
 
 1. For Redmine 1.x: <tt>rake db:migrate_plugins RAILS_ENV=production</tt>
