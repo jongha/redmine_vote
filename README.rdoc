@@ -5,7 +5,7 @@ This is redmine vote plugin. Its style is similar to stackoverflow. You can vote
 
 == Screenshot
 
-<img src="https://raw.github.com/jongha/redmine_vote/master/screenshot/screenshot.png" alt="Screenshot" />
+{<img src="https://raw.github.com/jongha/redmine_vote/master/screenshot/screenshot.png" alt="Screenshot" />}[https://raw.github.com/jongha/redmine_vote/master/screenshot/screenshot.png]
 
 == Installing a plugin
 
