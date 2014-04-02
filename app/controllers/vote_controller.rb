@@ -28,6 +28,7 @@ class VoteController < ApplicationController
     @votes = Votes\
       .select('message_id, sum(point) as sump')\
       .joins('right join messages on messages.board_id = %s and votes.message_id = messages.id and messages.parent_id is null' % @board.id)\
+      .where('messages.locked' => 0)\
       .group('message_id')\
       .order('sum(point) desc, messages.replies_count desc, messages.id desc')\
       .limit(MAX_VOTELIST)
