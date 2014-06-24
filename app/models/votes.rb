@@ -20,4 +20,13 @@ class Votes < ActiveRecord::Base
   def get_point(message_id)
     return Votes.sum(:point, :conditions => ['message_id = ?', message_id])
   end
+
+  def get_points(user_id, message_id)
+    return result = {
+      "plus" => Votes.sum(:point, :conditions => ['message_id = ? and point > 0', message_id]),
+      "minus" => Votes.sum(:point, :conditions => ['message_id = ? and point < 0', message_id]),
+      "zero" => Votes.sum(:point, :conditions => ['message_id = ? and point = 0', message_id]),
+      "vote" => Votes.count(:point, :conditions => ['message_id = ? and user_id = ?', message_id, user_id]),
+    }
+  end  
 end

@@ -1,11 +1,8 @@
 <% unless User.current.login == '' %>
-  <% unless @board.nil? || @board[:id].nil? || @topic.nil? || @topic.id.nil? %>
-    <div id="vote" class="vote-area" data-board="<%=@board[:id] %>" data-topic="<%=@topic.id %>">
-        <div><a class="vote-button" href="#" data-point="1">▲</a></div>
-        <div class="vote-point">-</div>
-        <div><a class="vote-button" href="#" data-point="-1">▼</a></div>
-    </div>
-    <label id="label_vote_count" style="display:none"><%=l(:label_vote_count)%></label>
-  <% end %>
+  <div id="vote" class="vote-area" data-board="<%=@board.id%>" data-topic="<%=@topic.id%>">
+      <div><a class="vote-button" href="#" data-point="1">▲</a></div>
+      <div class="vote-point">-</div>
+      <div><a class="vote-button" href="#" data-point="-1">▼</a></div>
+  </div>
+  <label id="label_vote_count" style="display:none"><%=l(:label_vote_count)%></label>
 <% end %>
-<input type="hidden" id="vote-base-url" value="<%=url_for :controller => 'welcome' %>" />

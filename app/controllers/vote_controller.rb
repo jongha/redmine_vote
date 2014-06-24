@@ -10,17 +10,21 @@ class VoteController < ApplicationController
   def add
     find_board_and_topic
 
-    if ['-1', '1'].include? params[:point] then
+    if ['-1', '1', '0'].include? params[:point] then
       @point = @votes.add_vote(@message.id, @user.id, params[:point])
-    else
-      @point = @votes.get_point(@message.id)
     end
+    
+    get
   end
 
   def get
     find_board_and_topic
 
-    @point = @votes.get_point(@message.id)
+#    @point = @votes.get_point(@message.id)
+    result = @votes.get_points(@user.id, @message.id)
+    result['point'] = result['plus'] + result['minus']
+    render :json => result
+    
   end
 
   def result
