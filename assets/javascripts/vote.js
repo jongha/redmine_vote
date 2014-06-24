@@ -26,8 +26,9 @@ $(document).ready(function() {
             var board = vote.data("board");
             var topic = vote.data("topic");
             var voteButtons = vote.find(".vote-button");
+            var voteSummary = vote.find(".vote-point-total");
 
-            var setButton = function(buttons, data) {
+            var setButton = function(summary, buttons, data) {
 
               if(data) {
                   var i;
@@ -51,6 +52,10 @@ $(document).ready(function() {
 
                       button.find(".vote-point").html(point);
                   }
+
+                  if(summary) {
+                      summary.html(data.point);
+                  }
               }
             };
 
@@ -62,7 +67,7 @@ $(document).ready(function() {
                     vote.find(".vote-point").html("-");
                 },
                 success: function(data, textStatus, jqXHR) {
-                    setButton(voteButtons, data);
+                    setButton(voteSummary, voteButtons, data);
                 }
 
             }).always(function() {
@@ -77,7 +82,7 @@ $(document).ready(function() {
                         data: { point: point },
                         cache: false,
                         success: function(data, textStatus, jqXHR) {
-                            setButton(voteButtons, data);
+                            setButton(voteSummary, voteButtons, data);
                         }
                     });
                 });
