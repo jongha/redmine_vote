@@ -1,3 +1,6 @@
 en:
   label_vote_result: "Vote Result"
   label_vote_count: "Votes"
+  label_vote_like: "Like"
+  label_vote_dislike: "Dislike"
+  label_vote_normal: "Normal"

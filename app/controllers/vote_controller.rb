@@ -26,6 +26,13 @@ class VoteController < ApplicationController
     render :json => result
     
   end
+  
+  def get_point
+    find_board_and_topic
+    
+    render :json => @votes.get_points(@user.id, @message.id, true)
+    
+  end  
 
   def result
     @board = Board.find(params[:board_id])

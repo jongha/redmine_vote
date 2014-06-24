@@ -21,12 +21,21 @@ class Votes < ActiveRecord::Base
     return Votes.sum(:point, :conditions => ['message_id = ?', message_id])
   end
 
-  def get_points(user_id, message_id)
-    return result = {
-      "plus" => Votes.sum(:point, :conditions => ['message_id = ? and point > 0', message_id]),
-      "minus" => Votes.sum(:point, :conditions => ['message_id = ? and point < 0', message_id]),
-      "zero" => Votes.sum(:point, :conditions => ['message_id = ? and point = 0', message_id]),
-      "vote" => Votes.count(:point, :conditions => ['message_id = ? and user_id = ?', message_id, user_id]),
-    }
+  def get_points(user_id, message_id, simple = false)
+    if simple
+      return result = {
+        "point" => Votes.sum(:point, :conditions => ['message_id = ?', message_id]),
+      }
+      
+    else
+      owner = Votes.find(:first, :conditions => ['message_id = ? and user_id = ?', message_id, user_id])
+      
+      return result = {
+        "plus" => Votes.sum(:point, :conditions => ['message_id = ? and point > 0', message_id]),
+        "minus" => Votes.sum(:point, :conditions => ['message_id = ? and point < 0', message_id]),
+        "zero" => Votes.count(:point, :conditions => ['message_id = ? and point = 0', message_id]),
+        "vote" => owner.nil? ? nil : owner.point,
+      }
+    end
   end  
 end

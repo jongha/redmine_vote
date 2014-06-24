@@ -25,19 +25,44 @@ $(document).ready(function() {
 
             var board = vote.data("board");
             var topic = vote.data("topic");
-            var votePoint = vote.find(".vote-point:first");
-            var voteCheck = vote.find(".vote-check:first");
-            
+            var voteButtons = vote.find(".vote-button");
+
+            var setButton = function(buttons, data) {
+
+              if(data) {
+                  var i;
+                  for(i=0; i<buttons.length; ++i) {
+                      var button = $(voteButtons[i]);
+                      var type = button.data("point");
+
+                      var point = "-";
+                      if(data.vote !== null && type === data.vote) {
+                          button.removeClass("disabled");
+                      }else {
+                          button.addClass("disabled");
+                      }
+
+                      switch(type) {
+                        case 1: point = data.plus; break;
+                        case 0: point = data.zero; break;
+                        case -1: point = -data.minus; break;
+                        default: break;
+                      }
+
+                      button.find(".vote-point").html(point);
+                  }
+              }
+            };
+
             $.ajax({
                 type: "GET",
                 url: "/boards/" + board + "/topics/" + topic + "/vote",
                 cache: false,
                 error: function(jqXHR, textStatus, errorThrown) {
-                    votePoint.html("-");
+                    vote.find(".vote-point").html("-");
                 },
                 success: function(data, textStatus, jqXHR) {
-                    votePoint.html(data.point);
-                    voteCheck.html(data.vote ? "☑" : "✅");
+                    setButton(voteButtons, data);
                 }
 
             }).always(function() {
@@ -52,8 +77,7 @@ $(document).ready(function() {
                         data: { point: point },
                         cache: false,
                         success: function(data, textStatus, jqXHR) {
-                            votePoint.html(data.point);
-                            voteCheck.html(data.vote ? "☑" : "✅");
+                            setButton(voteButtons, data);
                         }
                     });
                 });
@@ -111,7 +135,7 @@ $(document).ready(function() {
           var _this = $(this);
           $.ajax({
             type: "GET",
-            url: "/boards/" + _board + "/topics/" + _topic + "/vote",
+            url: "/boards/" + _board + "/topics/" + _topic + "/vote_point",
             cache: false,
             success: function(data, textStatus, jqXHR) {
               _this.html(data.point);

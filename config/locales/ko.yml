@@ -1,3 +1,6 @@
 ko:
   label_vote_result: "투표 순위"
   label_vote_count: "득표"
+  label_vote_like: "좋아요!"
+  label_vote_dislike: "별로예요"
+  label_vote_normal: "수고했어요^^"
