@@ -1,4 +1,11 @@
 $(document).ready(function() {
+    var baseObj = $("#vote-base-url");
+    var base = "";
+
+    if(baseObj.length > 0) {
+      base = baseObj.val();
+    }
+
     if($(".controller-messages").length && $("#vote").length) {
         var clr = $("<div></div>").css({ clear: "right" });
         var queue = [];
@@ -30,7 +37,7 @@ $(document).ready(function() {
             
             $.ajax({
                 type: "GET",
-                url: "/boards/" + board + "/topics/" + topic + "/vote",
+                url: base + "boards/" + board + "/topics/" + topic + "/vote",
                 cache: false,
                 error: function(jqXHR, textStatus, errorThrown) {
                     votePoint.html("-");
@@ -48,7 +55,7 @@ $(document).ready(function() {
                     var point = $(this).data("point");
                     $.ajax({
                         type: "POST",
-                        url: "/boards/" + board + "/topics/" + topic + "/vote",
+                        url: base + "boards/" + board + "/topics/" + topic + "/vote",
                         data: { point: point },
                         cache: false,
                         success: function(data, textStatus, jqXHR) {
@@ -77,7 +84,7 @@ $(document).ready(function() {
 
       $.ajax({
           type: "GET",
-          url: "/boards/" + match[1] + "/vote/result",
+          url: base + "boards/" + match[1] + "/vote/result",
           cache: false,
           success: function(data, textStatus, jqXHR) {
             if($(result).length === 0) {
@@ -111,7 +118,7 @@ $(document).ready(function() {
           var _this = $(this);
           $.ajax({
             type: "GET",
-            url: "/boards/" + _board + "/topics/" + _topic + "/vote",
+            url: base + "boards/" + _board + "/topics/" + _topic + "/vote",
             cache: false,
             success: function(data, textStatus, jqXHR) {
               _this.html(data.point);
