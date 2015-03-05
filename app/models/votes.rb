@@ -2,8 +2,9 @@ class Votes < ActiveRecord::Base
   unloadable
 
   def add_vote(message_id, user_id, point = 0)
-    votes = Votes.find(:first, :conditions => ['message_id = ? and user_id = ?', message_id, user_id])
-    if votes
+    votes = Votes.where('message_id = %d and user_id = %d' % [message_id, user_id]).limit(1)
+
+    unless votes.count == 0
       votes.point = point.nil? ? 0 : point
       votes.save!
     else
@@ -13,20 +14,20 @@ class Votes < ActiveRecord::Base
       votes.point = point.nil? ? 0 : point
       votes.save!
     end
-    
+
     return get_point(message_id)
   end
 
   def get_point(message_id)
-    return Votes.sum(:point, :conditions => ['message_id = ?', message_id])
+    return Votes.where('message_id = %d' % message_id).sum(:point)
   end
 
   def get_points(user_id, message_id)
     return result = {
-      "plus" => Votes.sum(:point, :conditions => ['message_id = ? and point > 0', message_id]),
-      "minus" => Votes.sum(:point, :conditions => ['message_id = ? and point < 0', message_id]),
-      "zero" => Votes.sum(:point, :conditions => ['message_id = ? and point = 0', message_id]),
-      "vote" => Votes.count(:point, :conditions => ['message_id = ? and user_id = ?', message_id, user_id]),
+      "plus" => Votes.where('message_id = %d and point > 0' % message_id).sum(:point),
+      "minus" => Votes.where('message_id = %d and point < 0' % message_id).sum(:point),
+      "zero" => Votes.where('message_id = %d and point = 0' % message_id).sum(:point),
+      "vote" => Votes.where('message_id = %d and user_id = %d' % [message_id, user_id]).count(:point),
     }
-  end  
+  end
 end
