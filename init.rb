@@ -5,7 +5,7 @@ Redmine::Plugin.register :redmine_vote do
   name 'Redmine Vote plugin'
   author 'Jong-Ha Ahn'
   description 'This is a plugin for Redmine'
-  version '1.0.1'
+  version '1.2.2'
   url 'http://github.com/jongha/redmine_vote'
   author_url 'http://www.mrlatte.net'
 end
